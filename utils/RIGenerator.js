@@ -6,8 +6,7 @@ exports.generateRankImage = async (rank,message) => {
     const canvas = createCanvas(375, 150);
     const context = canvas.getContext('2d');
 
-    console.log(rank)
-
+    // Loads all the necessary images
     Promise.all([
         loadImage('assets/background.png'),
         loadImage('assets/text.png'),
@@ -15,6 +14,7 @@ exports.generateRankImage = async (rank,message) => {
         loadImage('assets/small_appa.png'),
         loadImage('assets/small_appa.png')
     ]).then(([background, title, rank, icon1, icon2]) => {
+        // Draws all the images to the canvas with the specified positioning and sizing
         context.drawImage(background, 0, 0, canvas.width, canvas.height);
         const titleX = (canvas.width - title.width) / 2;
         const titleY = 10;
@@ -36,13 +36,10 @@ exports.generateRankImage = async (rank,message) => {
         context.drawImage(rank, rankX, rankY, newRankWidth, newRankHeight);
         fs.writeFileSync('rank.png', canvas.toBuffer());
         
-        message.reply({content: "Kayeteaa's rank is currently",files: [{ attachment: 'rank.png' }]}).then().catch(console.error);
+        message.reply({files: [{ attachment: 'rank.png' }]}).then().catch(console.error);
 
     }).catch((error) => {
         console.error(error);
     });
 
 };
-
-
-

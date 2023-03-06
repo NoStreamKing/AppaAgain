@@ -20,11 +20,15 @@ client.once(Events.ClientReady, client => {
 // Listen for messages / Chat Commands
 client.on(Events.MessageCreate, async message => {
 
+  // loops through all files in the Chat_Commands folder
     fs.readdirSync('./Chat_Commands').forEach(file => {
+      // checks if the file is a .js file
       if (file.endsWith('.js')) {
         const command = require(`./Chat_Commands/${file}`);
+        // checks if the command has the run function
         if (typeof command.run === 'function') {
           let isCommand = command.isCommand;
+          // checks if the command matches then runs the code
           if (message.content === `${isCommand == true ? '!' : ''}${file.slice(0, -3)}`) {
             command.run(message);
           }
