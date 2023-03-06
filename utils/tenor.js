@@ -1,5 +1,5 @@
 const getTenorGif = async (apiKey, searchTerm) => {
-    const url = `https://tenor.googleapis.com/v2/search?q=appa%20avatar&key=AIzaSyBimotCtLaC3u8rwq-r9BgdoF_W7N6EGz8&client_key=my_test_app&limit=100`;
+    const url = `https://tenor.googleapis.com/v2/search?q=appa%20avatar&key=${process.env.TENOR_API_KEY}&client_key=my_test_app&limit=100`;
   
     try {
       // Use a dynamic import statement to import the node-fetch library

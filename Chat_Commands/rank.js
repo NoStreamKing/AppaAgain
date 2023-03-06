@@ -2,8 +2,8 @@ require('dotenv').config();
 const axios = require('axios').default;
 
 const API_URL = 'https://api.kyroskoh.xyz/valorant/v1/mmr/';
-const VALORANT_NAME = 'Silver';
-const VALORANT_TAG = 'Sqrtr';
+const VALORANT_NAME = 'backbenderappa';
+const VALORANT_TAG = '1011';
 const region = 'na';
 
 exports.run = async (message) => {
