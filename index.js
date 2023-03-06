@@ -1,8 +1,9 @@
 // Load environment variables from .env file
 require('dotenv').config();
-const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, Events, GatewayIntentBits, Collection ,ActivityType } = require('discord.js');
 const fs = require('fs');
 const { options } = require('./Commands/askappa');
+const { checkIfUserIsLive } = require('./utils/CheckStream.js');
 
 // Create a new client instance with the following intents
 const client = new Client({
@@ -37,6 +38,10 @@ client.once(Events.ClientReady, client => {
       options: data.options
     });
   }
+
+  // checkIfUserIsLive(client);
+
+  client.user.setActivity('Just Chillin', { type: ActivityType.Playing}, { status: 'online' });
 });
 
 // Listen for messages / Chat Commands
@@ -76,6 +81,14 @@ client.on('interactionCreate', async interaction => {
     await interaction.reply({ content: 'An error occurred while executing this command.', ephemeral: true });
   }
 });
+
+// check every 5 minutes if twich stream is live
+setInterval(() => {
+  checkIfUserIsLive(client);
+}, 5 * 60 * 1000);
+
+
+
 
 // Login to Discord with your client's token
 client.login(process.env.DISCORD_TOKEN);
