@@ -1,6 +1,5 @@
 const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs');
-const { MessageAttachment } = require('discord.js');
 
 exports.generateRankImage = async (rank,message) => {
     const canvas = createCanvas(375, 150);

@@ -1,7 +1,8 @@
 // Load environment variables from .env file
 require('dotenv').config();
-const { Client, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
+const { options } = require('./Commands/askappa');
 
 // Create a new client instance with the following intents
 const client = new Client({
@@ -12,9 +13,30 @@ const client = new Client({
   ]
 });
 
+// Create a new collection to store our commands
+client.commands = new Collection();
+
+// Load all command files from the commands directory
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+}
+
 // Listen for the `ready` event
 client.once(Events.ClientReady, client => {
   console.log(`Ready! Logged in as ${client.user.tag}`);
+
+
+  for(cmd of client.commands) {
+    data = cmd[1]
+    client.application.commands.create({
+      name: data.name,
+      description: data.description,
+      options: data.options
+    });
+  }
 });
 
 // Listen for messages / Chat Commands
@@ -36,6 +58,23 @@ client.on(Events.MessageCreate, async message => {
       }
     });
 
+});
+
+// Handle command execution
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isCommand()) return;
+
+  const command = client.commands.get(interaction.commandName);
+
+  if (!command) return;
+
+
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({ content: 'An error occurred while executing this command.', ephemeral: true });
+  }
 });
 
 // Login to Discord with your client's token
