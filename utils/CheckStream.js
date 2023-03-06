@@ -27,7 +27,7 @@ exports.checkIfUserIsLive = async (client) => {
         client.user.setPresence({
             activities: [{
               name: 'Just Chillin',
-              type: "PLAYING"
+              type: ActivityType.Playing
             }]
           });
     }
