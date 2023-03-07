@@ -2,8 +2,9 @@
 require('dotenv').config();
 const { Client, Events, GatewayIntentBits, Collection ,ActivityType } = require('discord.js');
 const fs = require('fs');
-const { options } = require('./Commands/askappa');
 const { checkIfUserIsLive } = require('./utils/CheckStream.js');
+const { getTikTokData } = require('./utils/Tiktok.js');
+const { getJSONFromFile } = require('./utils/StorageCheck.js');
 
 // Create a new client instance with the following intents
 const client = new Client({
@@ -85,10 +86,24 @@ client.on('interactionCreate', async interaction => {
 // check every 5 minutes if twich stream is live
 setInterval(() => {
   checkIfUserIsLive(client);
+
+  getTikTokData().then(link => {
+    getJSONFromFile("Tiktok.json").then(json => {
+      if(json["MRPost"] == link) return;
+      json["MRPost"] = link;
+  
+      // send message to sepcific discord channel
+  
+      client.channels.cache.get('1082553714482626580').send(`New TikTok Post: ${link}`);
+  
+      fs.writeFile(`Storage/Tiktok.json`, JSON.stringify(json), (err) => {
+        if (err) console.error(err);
+      });
+    });
+  
+  }).catch(error => console.error(error));
+
 }, 5 * 60 * 1000);
-
-
-
 
 // Login to Discord with your client's token
 client.login(process.env.DISCORD_TOKEN);

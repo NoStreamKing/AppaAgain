@@ -1,7 +1,7 @@
 const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs');
 
-exports.generateRankImage = async (rank,message) => {
+exports.generateRankImage = async (rank,interaction) => {
     const canvas = createCanvas(375, 150);
     const context = canvas.getContext('2d');
 
@@ -35,7 +35,7 @@ exports.generateRankImage = async (rank,message) => {
         context.drawImage(rank, rankX, rankY, newRankWidth, newRankHeight);
         fs.writeFileSync('rank.png', canvas.toBuffer());
         
-        message.reply({files: [{ attachment: 'rank.png' }]}).then().catch(console.error);
+        interaction.reply({files: [{ attachment: 'rank.png' }]}).then().catch(console.error);
 
     }).catch((error) => {
         console.error(error);
