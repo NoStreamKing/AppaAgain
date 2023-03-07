@@ -41,6 +41,7 @@ client.once(Events.ClientReady, client => {
   }
 
   // checkIfUserIsLive(client);
+  doTiktokCheck();
 
   client.user.setActivity('Just Chillin', { type: ActivityType.Playing}, { status: 'online' });
 });
@@ -87,6 +88,12 @@ client.on('interactionCreate', async interaction => {
 setInterval(() => {
   checkIfUserIsLive(client);
 
+  doTiktokCheck();
+
+}, 5 * 60 * 1000);
+
+
+function doTiktokCheck(){
   getTikTokData().then(link => {
     getJSONFromFile("Tiktok.json").then(json => {
       if(json["MRPost"] == link) return;
@@ -94,7 +101,7 @@ setInterval(() => {
   
       // send message to sepcific discord channel
   
-      client.channels.cache.get('1082553714482626580').send(`New TikTok Post: ${link}`);
+      client.channels.cache.get('1082553714482626580').send(`**New TikTok Post**: ${link}`);
   
       fs.writeFile(`Storage/Tiktok.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);
@@ -102,8 +109,7 @@ setInterval(() => {
     });
   
   }).catch(error => console.error(error));
-
-}, 5 * 60 * 1000);
+}
 
 // Login to Discord with your client's token
 client.login(process.env.DISCORD_TOKEN);
