@@ -6,6 +6,7 @@ const { checkIfUserIsLive } = require('./utils/CheckStream.js');
 const { getTikTokData } = require('./utils/Tiktok.js');
 const { getJSONFromFile } = require('./utils/StorageCheck.js');
 const { getLatestTweet } = require('./utils/Twitter.js');
+const { getLatestInstagramPost } = require('./utils/Instagram.js');
 
 // Create a new client instance with the following intents
 const client = new Client({
@@ -43,6 +44,8 @@ client.once(Events.ClientReady, client => {
 
   // checkIfUserIsLive(client);
   // doTiktokCheck();
+  // doTwitterCheck();
+  doInstagramCheck();
 
   client.user.setActivity('Just Chillin', { type: ActivityType.Playing}, { status: 'online' });
 });
@@ -88,14 +91,10 @@ client.on('interactionCreate', async interaction => {
 // check every 5 minutes if twich stream is live
 setInterval(() => {
   checkIfUserIsLive(client);
-
-  // doTiktokCheck();
+  doTiktokCheck();
+  doTwitterCheck();
 
 }, 5 * 60 * 1000);
-
-getLatestTweet("itskayeteaa").then(tweet => {
-  console.log(tweet)
-}).catch(error => console.error(error));
 
 
 function doTiktokCheck(){
@@ -113,6 +112,46 @@ function doTiktokCheck(){
       });
     });
   
+  }).catch(error => console.error(error));
+}
+
+function doTwitterCheck(){
+
+  getLatestTweet("itskayeteaa").then(tweet => {
+    let mostRecentId = tweet.data[0].id;
+    getJSONFromFile("Twitter.json").then(json => {
+  
+      if(json["MRTweet"] == mostRecentId) return;
+      json["MRTweet"] = mostRecentId;
+  
+      // send message to sepcific discord channel
+  
+      client.channels.cache.get('1082553714482626580').send(`**New Tweet**: https://twitter.com/itskayeteaa/status/${mostRecentId}`);
+  
+      fs.writeFile(`Storage/Twitter.json`, JSON.stringify(json), (err) => {
+        if (err) console.error(err);
+      });
+  
+    });
+  }).catch(error => console.error(error));
+  
+
+}
+
+function doInstagramCheck(){
+  getLatestInstagramPost().then(post => {
+    getJSONFromFile("Instagram.json").then(json => {
+      if(json["MRPhoto"] == post) return;
+      json["MRPhoto"] = post;
+  
+      // send message to sepcific discord channel
+  
+      client.channels.cache.get('1082553714482626580').send(`**New Instagram Post**: https://www.instagram.com${post}`);
+  
+      fs.writeFile(`Storage/Instagram.json`, JSON.stringify(json), (err) => {
+        if (err) console.error(err);
+      });
+    });
   }).catch(error => console.error(error));
 }
 
