@@ -5,6 +5,7 @@ const fs = require('fs');
 const { checkIfUserIsLive } = require('./utils/CheckStream.js');
 const { getTikTokData } = require('./utils/Tiktok.js');
 const { getJSONFromFile } = require('./utils/StorageCheck.js');
+const { getLatestTweet } = require('./utils/Twitter.js');
 
 // Create a new client instance with the following intents
 const client = new Client({
@@ -41,7 +42,7 @@ client.once(Events.ClientReady, client => {
   }
 
   // checkIfUserIsLive(client);
-  doTiktokCheck();
+  // doTiktokCheck();
 
   client.user.setActivity('Just Chillin', { type: ActivityType.Playing}, { status: 'online' });
 });
@@ -88,9 +89,13 @@ client.on('interactionCreate', async interaction => {
 setInterval(() => {
   checkIfUserIsLive(client);
 
-  doTiktokCheck();
+  // doTiktokCheck();
 
 }, 5 * 60 * 1000);
+
+getLatestTweet("itskayeteaa").then(tweet => {
+  console.log(tweet)
+}).catch(error => console.error(error));
 
 
 function doTiktokCheck(){
