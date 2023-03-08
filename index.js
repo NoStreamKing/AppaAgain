@@ -42,9 +42,8 @@ client.once(Events.ClientReady, client => {
     });
   }
 
-  // checkIfUserIsLive(client);
-  // doTiktokCheck();
-  // doTwitterCheck();
+  doTiktokCheck();
+  doTwitterCheck();
   doInstagramCheck();
 
   client.user.setActivity('Just Chillin', { type: ActivityType.Playing}, { status: 'online' });
