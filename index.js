@@ -7,6 +7,7 @@ const { getTikTokData } = require('./utils/Tiktok.js');
 const { getJSONFromFile } = require('./utils/StorageCheck.js');
 const { getLatestTweet } = require('./utils/Twitter.js');
 const { getLatestInstagramPost } = require('./utils/Instagram.js');
+const { mentionRole } = require('./utils/Role.js');
 
 // Create a new client instance with the following intents
 const client = new Client({
@@ -95,7 +96,6 @@ setInterval(() => {
 
 }, 5 * 60 * 1000);
 
-
 function doTiktokCheck(){
   getTikTokData().then(link => {
     getJSONFromFile("Tiktok.json").then(json => {
@@ -103,8 +103,7 @@ function doTiktokCheck(){
       json["MRPost"] = link;
   
       // send message to sepcific discord channel
-  
-      client.channels.cache.get('1082553714482626580').send(`**New TikTok Post**: ${link}`);
+      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send(`${mentionRole(process.env.TIKTOK_ROLE_ID)} **New TikTok Post**: ${link}`);
   
       fs.writeFile(`Storage/Tiktok.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);
@@ -125,7 +124,7 @@ function doTwitterCheck(){
   
       // send message to sepcific discord channel
   
-      client.channels.cache.get('1082553714482626580').send(`**New Tweet**: https://twitter.com/itskayeteaa/status/${mostRecentId}`);
+      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send(`${mentionRole(process.env.TWITTER_ROLE_ID)} **New Tweet**: https://twitter.com/itskayeteaa/status/${mostRecentId}`);
   
       fs.writeFile(`Storage/Twitter.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);
@@ -145,7 +144,7 @@ function doInstagramCheck(){
   
       // send message to sepcific discord channel
   
-      client.channels.cache.get('1082553714482626580').send(`**New Instagram Post**: https://www.instagram.com${post}`);
+      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send(`${mentionRole(process.env.INSTAGRAM_ROLE_ID)} **New Instagram Post**: https://www.instagram.com${post}`);
   
       fs.writeFile(`Storage/Instagram.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);

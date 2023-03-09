@@ -1,4 +1,4 @@
-const getTenorGif = async (apiKey, searchTerm) => {
+const getTenorGif = async () => {
     const url = `https://tenor.googleapis.com/v2/search?q=appa%20avatar&key=${process.env.TENOR_API_KEY}&client_key=my_test_app&limit=100`;
   
     try {
