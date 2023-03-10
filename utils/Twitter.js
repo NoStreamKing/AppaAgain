@@ -18,7 +18,6 @@ exports.getLatestTweet = async(username) => {
         },
       });
 
-      await console.log("Twitter has been checked");
 
       return response.data;
     } catch (error) {

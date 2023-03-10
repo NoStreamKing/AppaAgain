@@ -1,7 +1,8 @@
 // Load environment variables from .env file
 require('dotenv').config();
-const { Client, Events, GatewayIntentBits, Collection ,ActivityType } = require('discord.js');
+const { Client, Events, GatewayIntentBits, Collection ,ActivityType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('fs');
+const { getBadContent } = require('./utils/BadContent.js');
 const { checkIfUserIsLive } = require('./utils/CheckStream.js');
 const { getTikTokData } = require('./utils/Tiktok.js');
 const { getJSONFromFile } = require('./utils/StorageCheck.js');
@@ -42,7 +43,7 @@ client.once(Events.ClientReady, client => {
       options: data.options
     });
   }
-
+  checkIfUserIsLive(client);
   doTiktokCheck();
   doTwitterCheck();
   doInstagramCheck();
@@ -53,21 +54,18 @@ client.once(Events.ClientReady, client => {
 // Listen for messages / Chat Commands
 client.on(Events.MessageCreate, async message => {
 
-  // loops through all files in the Chat_Commands folder
-    fs.readdirSync('./Chat_Commands').forEach(file => {
-      // checks if the file is a .js file
-      if (file.endsWith('.js')) {
-        const command = require(`./Chat_Commands/${file}`);
-        // checks if the command has the run function
-        if (typeof command.run === 'function') {
-          let isCommand = command.isCommand;
-          // checks if the command matches then runs the code
-          if (message.content === `${isCommand == true ? '!' : ''}${file.slice(0, -3)}`) {
-            command.run(message);
-          }
-        }
-      }
-    });
+  if (message.author.bot) return;
+
+  const regex = new RegExp(getBadContent().join('|'));
+
+  if (regex.test(message.content.toLowerCase())) {
+    
+    message.reply({content:"Appa has caught you being racist, please refrain from using such language in the future." , files: ["https://media.tenor.com/lhvOTFhPkkkAAAAi/cat-animation.gif"] })
+
+    setTimeout(() => {
+      message.delete();
+    }, 500);
+  }
 
 });
 
@@ -93,6 +91,7 @@ setInterval(() => {
   checkIfUserIsLive(client);
   doTiktokCheck();
   doTwitterCheck();
+  doInstagramCheck();
 
 }, 5 * 60 * 1000);
 
@@ -144,7 +143,17 @@ function doInstagramCheck(){
   
       // send message to sepcific discord channel
   
-      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send(`${mentionRole(process.env.INSTAGRAM_ROLE_ID)} **New Instagram Post**: https://www.instagram.com${post}`);
+      if(post == null|| post == undefined) return;
+
+      const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+          .setURL("https://www.instagram.com/idkkatietrinh/")
+					.setLabel('❤️ Go to my Instagram ❤️')
+					.setStyle(ButtonStyle.Link)
+        );
+
+      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send({ content: `${mentionRole(process.env.INSTAGRAM_ROLE_ID)} **New Instagram Post** ` , files: [{ attachment: post }], components: [row]});
   
       fs.writeFile(`Storage/Instagram.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);

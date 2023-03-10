@@ -9,7 +9,9 @@
     "fs": "^0.0.1-security",
     "instagram-private-api": "^1.45.3",
     "node-fetch": "^3.3.0",
+    "profanity-filter": "^0.2.1",
     "puppeteer": "^19.7.3",
+    "sentiment": "^5.0.2",
     "twitter-api-v2": "^1.14.2"
   }
 }

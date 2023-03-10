@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 exports.getTikTokData = async () => {
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
 
   await page.goto('https://www.tiktok.com/@itskayeteaa');
@@ -12,8 +12,6 @@ exports.getTikTokData = async () => {
   let link = await page.evaluate(el => el.href, firstAnchor);
   
   await browser.close();
-
-  await console.log("Tiktok has been checked");
 
   return link;
 
