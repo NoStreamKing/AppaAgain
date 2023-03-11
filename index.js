@@ -44,9 +44,9 @@ client.once(Events.ClientReady, client => {
     });
   }
   checkIfUserIsLive(client);
+  doInstagramCheck();
   doTiktokCheck();
   doTwitterCheck();
-  doInstagramCheck();
 
   client.user.setActivity('Just Chillin', { type: ActivityType.Playing}, { status: 'online' });
 });
@@ -60,7 +60,7 @@ client.on(Events.MessageCreate, async message => {
 
   if (regex.test(message.content.toLowerCase())) {
     
-    message.reply({content:"Appa has caught you being racist, please refrain from using such language in the future." , files: ["https://media.tenor.com/lhvOTFhPkkkAAAAi/cat-animation.gif"] })
+    message.reply({content:"Appa has caught you saying a bad word, please refrain from using such language in the future." , files: ["https://media.tenor.com/lhvOTFhPkkkAAAAi/cat-animation.gif"] })
 
     setTimeout(() => {
       message.delete();
@@ -95,8 +95,9 @@ setInterval(() => {
 
 }, 5 * 60 * 1000);
 
-function doTiktokCheck(){
-  getTikTokData().then(link => {
+function doTiktokCheck(isHeadless){
+  isHeadless = isHeadless == undefined ? true : isHeadless;
+  getTikTokData(isHeadless).then(link => {
     getJSONFromFile("Tiktok.json").then(json => {
       if(json["MRPost"] == link) return;
       json["MRPost"] = link;
@@ -135,8 +136,9 @@ function doTwitterCheck(){
 
 }
 
-function doInstagramCheck(){
-  getLatestInstagramPost().then(post => {
+function doInstagramCheck(isHeadless){
+  isHeadless = isHeadless == undefined ? true : isHeadless;
+  getLatestInstagramPost(isHeadless).then(post => {
     getJSONFromFile("Instagram.json").then(json => {
       if(json["MRPhoto"] == post) return;
       json["MRPhoto"] = post;

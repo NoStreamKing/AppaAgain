@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
-exports.getTikTokData = async () => {
-  const browser = await puppeteer.launch({headless: false});
+exports.getTikTokData = async (isHeadless) => {
+  const browser = await puppeteer.launch({headless: isHeadless});
   const page = await browser.newPage();
 
   await page.goto('https://www.tiktok.com/@itskayeteaa');

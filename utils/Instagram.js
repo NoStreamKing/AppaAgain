@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer');
 
-exports.getLatestInstagramPost = async () => {
+exports.getLatestInstagramPost = async (isHeadless) => {
 
-  const browser = await puppeteer.launch({ headless: true});
+  const browser = await puppeteer.launch({ headless: isHeadless});
   const page = await browser.newPage();
   const url = 'https://www.inststalk.com/user/idkkatietrinh?id=3965101965';
   await page.goto(url);
