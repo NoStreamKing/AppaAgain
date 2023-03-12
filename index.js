@@ -71,6 +71,26 @@ client.on(Events.MessageCreate, async message => {
 
 // Handle command execution
 client.on('interactionCreate', async interaction => {
+
+  // chec if interaction is a button click
+  if(interaction.isButton() && interaction.customId === 'Subscribe') {
+
+    // check if user has the role
+    if(interaction.member.roles.cache.has(process.env.SOCIAL_ROLE_ID)) {
+      
+      interaction.reply({ content: 'You already have the Socials role, you will be notified when Kayeteaa updates her Socials ❤️', ephemeral: true });
+
+    }else{
+      // get the role id from the env file
+      const role = interaction.guild.roles.cache.get(process.env.SOCIAL_ROLE_ID);
+      // add the role to the user
+      interaction.member.roles.add(role);
+      // send a message to the user
+      interaction.reply({ content: 'You have been added to the Socials role, you will now be notified when Kayeteaa updates her Socials ❤️', ephemeral: true });
+    
+    }
+  }
+  
   if (!interaction.isCommand()) return;
 
   const command = client.commands.get(interaction.commandName);
@@ -103,7 +123,7 @@ function doTiktokCheck(isHeadless){
       json["MRPost"] = link;
   
       // send message to sepcific discord channel
-      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send(`${mentionRole(process.env.TIKTOK_ROLE_ID)} **New TikTok Post**: ${link}`);
+      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send(`${mentionRole(process.env.SOCIAL_ROLE_ID)} **New TikTok Post**: ${link}`);
   
       fs.writeFile(`Storage/Tiktok.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);
@@ -124,7 +144,7 @@ function doTwitterCheck(){
   
       // send message to sepcific discord channel
   
-      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send(`${mentionRole(process.env.TWITTER_ROLE_ID)} **New Tweet**: https://twitter.com/itskayeteaa/status/${mostRecentId}`);
+      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send(`${mentionRole(process.env.SOCIAL_ROLE_ID)} **New Tweet**: https://twitter.com/itskayeteaa/status/${mostRecentId}`);
   
       fs.writeFile(`Storage/Twitter.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);
@@ -155,7 +175,7 @@ function doInstagramCheck(isHeadless){
 					.setStyle(ButtonStyle.Link)
         );
 
-      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send({ content: `${mentionRole(process.env.INSTAGRAM_ROLE_ID)} **New Instagram Post** ` , files: [{ attachment: post }], components: [row]});
+      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send({ content: `${mentionRole(process.env.SOCIAL_ROLE_ID)} **New Instagram Post** ` , files: [{ attachment: post }], components: [row]});
   
       fs.writeFile(`Storage/Instagram.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);
