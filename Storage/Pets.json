@@ -1,0 +1,64 @@
+[
+  {
+    "Player": {
+      "id": 334891302758121500,
+      "money": 0,
+      "pet": {
+        "name": "Appa ( Chris )",
+        "status": "Alive",
+        "stats": {
+          "health": 100,
+          "hunger": 70,
+          "thirst": 76,
+          "happiness": 85,
+          "energy": 100,
+          "cleanliness": 100
+        },
+        "records": {
+          "lastFed": 1679139683442,
+          "lastWatered": 1679139683442,
+          "lastPlayed": 0,
+          "lastCleaned": 0,
+          "lastPetted": 0,
+          "lastWalked": 0,
+          "lastSlept": 0,
+          "lastBathed": 0
+        },
+        "inventory": {
+          "apple": 0,
+          "hay": 0,
+          "cabbage": 0,
+          "water": 0
+        }
+      }
+    }
+  },
+  {
+    "Player": {
+      "id": 387709427953696800,
+      "money": 0,
+      "pet": {
+        "name": "Appa Alex",
+        "status": "Alive",
+        "stats": {
+          "health": 100,
+          "hunger": 82.85714284000002,
+          "thirst": 100,
+          "happiness": 100,
+          "energy": 100,
+          "cleanliness": 100
+        },
+        "records": {
+          "lastFed": 0,
+          "lastWatered": 0,
+          "lastPlayed": 0,
+          "lastCleaned": 0,
+          "lastPetted": 0,
+          "lastWalked": 0,
+          "lastSlept": 0,
+          "lastBathed": 0
+        }
+      }
+    }
+  }
+]

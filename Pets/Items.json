@@ -1,0 +1,31 @@
+[
+    {
+        "name": "Hay",
+        "Hunger": 2,
+        "Thirst": 0,
+        "Happiness": 1,
+        "Price": 75
+    },
+    {
+        "name": "Apple",
+        "Hunger": 5,
+        "Thirst": 2,
+        "Happiness": 3,
+        "Price": 125
+    },
+    {
+        "name": "Cabbage",
+        "Hunger": 10,
+        "Thirst": 5,
+        "Happiness": 5,
+        "Price": 200
+    },
+    {
+        "name": "Water",
+        "Hunger": 0,
+        "Thirst": 15,
+        "Happiness": 10,
+        "Price": 250
+    }
+
+]

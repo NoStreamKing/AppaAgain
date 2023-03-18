@@ -25,6 +25,8 @@ module.exports = {
         const question = interaction.options.getString('question');
         interaction.reply({content: "Thinking..."});
         let res = await chapGPT(`${question}`);
+        // defer interaction reply
+
         setTimeout(() => {
             interaction.editReply({content: res});
         }, 5000);

@@ -10,6 +10,8 @@ const { getLatestTweet } = require('./utils/Twitter.js');
 const { getLatestInstagramPost } = require('./utils/Instagram.js');
 const { mentionRole } = require('./utils/Role.js');
 
+const { runPetChecks } = require('./utils/Pets.js');
+
 // Create a new client instance with the following intents
 const client = new Client({
   intents: [
@@ -160,8 +162,9 @@ function doInstagramCheck(isHeadless){
   isHeadless = isHeadless == undefined ? true : isHeadless;
   getLatestInstagramPost(isHeadless).then(post => {
     getJSONFromFile("Instagram.json").then(json => {
-      if(json["MRPhoto"] == post) return;
-      json["MRPhoto"] = post;
+      if(json["Caption"] == post.caption) return;
+      json["MRPhoto"] = post.imageUrl;
+      json["Caption"] = post.caption;
   
       // send message to sepcific discord channel
   
@@ -175,7 +178,7 @@ function doInstagramCheck(isHeadless){
 					.setStyle(ButtonStyle.Link)
         );
 
-      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send({ content: `${mentionRole(process.env.SOCIAL_ROLE_ID)} **New Instagram Post** ` , files: [{ attachment: post }], components: [row]});
+      client.channels.cache.get(process.env.SOCIAL_CHANNEL_ID).send({ content: `${mentionRole(process.env.SOCIAL_ROLE_ID)} **New Instagram Post** ` , files: [{ attachment: post.imageUrl }], components: [row]});
   
       fs.writeFile(`Storage/Instagram.json`, JSON.stringify(json), (err) => {
         if (err) console.error(err);
@@ -183,6 +186,9 @@ function doInstagramCheck(isHeadless){
     });
   }).catch(error => console.error(error));
 }
+
+// Function: Runs all the pet checks
+runPetChecks();
 
 // Login to Discord with your client's token
 client.login(process.env.DISCORD_TOKEN);
