@@ -74,20 +74,7 @@ client.on(Events.MessageCreate, async message => {
     }, 500);
   }else{
 
-    // check if userpoints contains an object with the user id
-    if(userPoints.some(user => user.id === message.author.id)){
-      // if it does, get the index of the object
-      let index = userPoints.findIndex(user => user.id === message.author.id);
-      // add 1 to the points
-      userPoints[index].points += 3;
-    }else{
-      // if it doesn't, add the user to the array
-      userPoints.push({id: message.author.id, points: 3});
-    }
-
   }
-
-  console.log(userPoints);
 
 });
 
