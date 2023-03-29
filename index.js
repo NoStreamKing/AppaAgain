@@ -12,6 +12,8 @@ const { mentionRole } = require('./utils/Role.js');
 
 const { runPetChecks } = require('./utils/Pets.js');
 
+let userPoints = [];
+
 // Create a new client instance with the following intents
 const client = new Client({
   intents: [
@@ -39,11 +41,14 @@ client.once(Events.ClientReady, client => {
 
   for(cmd of client.commands) {
     data = cmd[1]
-    client.application.commands.create({
-      name: data.name,
-      description: data.description,
-      options: data.options
-    });
+    if(data.enabled === true){
+      client.application.commands.create({
+        name: data.name,
+        description: data.description,
+        options: data.options
+      });
+    }
+
   }
   checkIfUserIsLive(client);
   doInstagramCheck();
@@ -67,7 +72,22 @@ client.on(Events.MessageCreate, async message => {
     setTimeout(() => {
       message.delete();
     }, 500);
+  }else{
+
+    // check if userpoints contains an object with the user id
+    if(userPoints.some(user => user.id === message.author.id)){
+      // if it does, get the index of the object
+      let index = userPoints.findIndex(user => user.id === message.author.id);
+      // add 1 to the points
+      userPoints[index].points += 3;
+    }else{
+      // if it doesn't, add the user to the array
+      userPoints.push({id: message.author.id, points: 3});
+    }
+
   }
+
+  console.log(userPoints);
 
 });
 
@@ -114,8 +134,9 @@ setInterval(() => {
   doTiktokCheck();
   doTwitterCheck();
   doInstagramCheck();
-
+  // addPointsToUser();
 }, 5 * 60 * 1000);
+
 
 function doTiktokCheck(isHeadless){
   isHeadless = isHeadless == undefined ? true : isHeadless;
@@ -185,6 +206,33 @@ function doInstagramCheck(isHeadless){
       });
     });
   }).catch(error => console.error(error));
+}
+
+function addPointsToUser(){
+
+  if(userPoints.length != 0){
+      // get the currency.json file
+      getJSONFromFile("Currency.json").then(json => {
+        userPoints.forEach(user => {
+          // check if Currency.json contains an object with the user id
+          if(json.some(user => user.id === user.id)){
+            let index = json.findIndex(user => user.id === user.id);
+            json[index].points += user.points;
+          }else{
+            // if it doesn't, add the user to the array
+            json.push({id: user.id, points: user.points});
+          }
+        });
+
+        // write the new data to the file
+        fs.writeFile(`Storage/Currency.json`, JSON.stringify(json), (err) => {
+          if (err) console.error(err);
+        });
+        userPoints = [];
+      });
+ 
+  }
+
 }
 
 // Function: Runs all the pet checks

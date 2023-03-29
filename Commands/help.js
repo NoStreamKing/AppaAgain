@@ -3,6 +3,7 @@ const fs = require('fs');
 module.exports = {
     name: 'help',
     description: 'List of all the commands and their descriptions for Appa',
+    enabled: true,
     options: [],
     async execute(interaction) {
         let objs = [], adminObjs = [];
@@ -40,9 +41,6 @@ module.exports = {
         }
 
         objs = objs.concat(adminObjs);
-
-        console.log(JSON.stringify(objs))
-
         // messageembed
         const embed = {
             "title": "Appa's Commands",

@@ -4,6 +4,7 @@ const { getTenorGif } = require('../utils/tenor.js');
 module.exports = {
     name: 'gif',
     description: 'Gives you a random gif of appa.',
+    enabled: true,
     options: [],
     execute(interaction) {
 

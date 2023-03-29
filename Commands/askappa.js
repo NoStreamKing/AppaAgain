@@ -1,6 +1,7 @@
 module.exports = {
     name: 'askappa',
     description: 'Ask Appa a question!',
+    enabled: true,
     options: [
         {
             name: 'question',

@@ -9,6 +9,7 @@ const region = 'na';
 module.exports = {
     name: 'rank',
     description: 'Get\'s KT\'s rank',
+    enabled: true,
     options: [],
     async execute(interaction) {
         const apiURL = `${API_URL}${region}/${VALORANT_NAME}/${VALORANT_TAG}?show=rankonly&display=0`;

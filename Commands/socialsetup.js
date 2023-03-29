@@ -4,6 +4,7 @@ const fs = require('fs');
 module.exports = {
     name: 'socialsetup',
     description: 'sends the social dropdown message in the channel the command is run in',
+    enabled: true,
     options: [],
     requiredPermission: [PermissionsBitField.Flags.ManageRoles],
     execute(interaction) {

@@ -8,7 +8,7 @@
         "status": "Alive",
         "stats": {
           "health": 100,
-          "hunger": 70,
+          "hunger": 67.14285714,
           "thirst": 76,
           "happiness": 85,
           "energy": 100,
@@ -42,7 +42,7 @@
         "status": "Alive",
         "stats": {
           "health": 100,
-          "hunger": 82.85714284000002,
+          "hunger": 79.99999998000003,
           "thirst": 100,
           "happiness": 100,
           "energy": 100,

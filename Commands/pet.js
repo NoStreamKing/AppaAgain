@@ -3,6 +3,7 @@ const { feedPet } = require('../utils/Pets.js');
 module.exports = {
     name: 'appa',
     description: 'Your very own pet Appa!',
+    enabled: false,
     options: [
         {
             name: 'action',

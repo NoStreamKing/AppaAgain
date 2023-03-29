@@ -1,6 +1,7 @@
 module.exports = {
     name: 'backbender',
     description: 'Backbender percentage',
+    enabled: true,
     options: [
         {
             name: 'user',

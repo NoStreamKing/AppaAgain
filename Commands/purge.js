@@ -3,6 +3,7 @@ const { PermissionsBitField } = require('discord.js');
 module.exports = {
     name: 'purge',
     description: 'Purges the chat depending on the options you choose',
+    enabled: true,
     options: [
         {
             name: 'channel',
@@ -46,7 +47,6 @@ module.exports = {
       
           // Handle purging of a specific channel ( Works )
           if (optionName === 'channel' && optionType === 7 && options.data.length === 1) {
-            console.log('channel triggered')
             const channel = interaction.guild.channels.cache.get(optionValue);
             if (channel) {
               for(let i = 0; i < 5; i++) {
@@ -57,7 +57,6 @@ module.exports = {
 
           // Handle purging of a specific user ( Works )
           if (optionName === 'user' && optionType === 6 && options.data.length === 1) {
-            console.log('user triggered')
             const user = interaction.guild.members.cache.get(optionValue);
             interaction.channel.messages.fetch().then((messages) => {
                 // Filter messages from the specific user
@@ -69,7 +68,6 @@ module.exports = {
       
           // Handle purging of a specific user in a specific channel ( Works )
           if (optionName === 'channel' && optionType === 7 && options.get('user')) {
-            console.log('channel & user triggered')
             const channel = interaction.guild.channels.cache.get(optionValue);
             const userOption = options.get('user');
             const user = interaction.guild.members.cache.get(userOption.value);
@@ -85,7 +83,6 @@ module.exports = {
 
           // Handle purging of a channel with a specific time range ( Works )
           if (optionName === 'time' && optionType === 3 && options.get('channel')) {
-            console.log('time & channel triggered')
             const channelOption = options.get('channel');
             const channel = interaction.guild.channels.cache.get(channelOption.value);
             const timeString = optionValue;
@@ -114,7 +111,6 @@ module.exports = {
 
           // Handle purging of a user in a specific channel with a specific time range
           if (optionName === 'time' && optionType === 3 && options.get('user')) {
-            console.log('time & user triggered')
             const userOption = options.get('user');
             const user = interaction.guild.members.cache.get(userOption.value);
             const timeString = optionValue;
@@ -153,7 +149,6 @@ module.exports = {
           
           // Handle purging of a user in a specific channel with a specific time range
           if (optionName === 'time' && optionType === 3 && options.get('channel') && options.get('user')) {
-            console.log('time & channel & user triggered')
             const channelOption = options.get('channel');
             const channel = interaction.guild .channels.cache.get(channelOption.value);
             const userOption = options.get('user');

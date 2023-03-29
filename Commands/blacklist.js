@@ -4,6 +4,7 @@ const fs = require('fs');
 module.exports = {
     name: 'blacklist',
     description: 'Blacklists a word from being used in the server',
+    enabled: true,
     options: [
         {
             name: 'type',

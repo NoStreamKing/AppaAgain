@@ -36,6 +36,7 @@ const getChannelId = async () => {
 module.exports = {
     name: 'followers',
     description: 'Get the number of followers KT has',
+    enabled: true,
     options: [],
     execute(interaction) {
         getFollowerCount().then(followerCount => interaction.reply(`KT currently has ${followerCount} followers! :eyes:`)).catch(error => console.error(error));
