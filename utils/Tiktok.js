@@ -1,8 +1,10 @@
-const puppeteer = require('puppeteer');
+const { chromium } = require('playwright');
 
 exports.getTikTokData = async (isHeadless) => {
-  const browser = await puppeteer.launch({headless: isHeadless});
-  const page = await browser.newPage();
+  console.time('getTikTokData');
+  const browser = await chromium.launch({ headless: isHeadless });
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
   await page.goto('https://www.tiktok.com/@itskayeteaa');
 
@@ -10,9 +12,10 @@ exports.getTikTokData = async (isHeadless) => {
   const firstAnchor = await tiktokElement.$('a');
 
   let link = await page.evaluate(el => el.href, firstAnchor);
-  
+
   await browser.close();
 
-  return link;
+  console.timeEnd('getTikTokData');
 
+  return link;
 }

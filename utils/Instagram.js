@@ -1,22 +1,29 @@
-const puppeteer = require('puppeteer');
+const { chromium } = require('playwright');
 
-exports.getLatestInstagramPost = async (isHeadless) => {
+exports.getLatestInstagramPost = async () => {
+  // start timer console
+  console.time('getLatestInstagramPost');
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
-  const browser = await puppeteer.launch({ headless: isHeadless});
-  const page = await browser.newPage();
-  const url = 'https://www.inststalk.com/user/idkkatietrinh?id=3965101965';
+  const url = 'https://www.inststalk.com/user/kayeteaa_/';
   await page.goto(url);
-  await page.waitForTimeout(5000);
-  const imageSelector = '[alt="idkkatietrinh instagram post image"]';
-  await page.waitForSelector(imageSelector);
+  await page.waitForSelector('[alt="kayeteaa_ instagram post image"]', { timeout: 10000 });
 
+  const imageSelector = '[alt="kayeteaa_ instagram post image"]';
   const captionSelector = '.info-area > .description';
+  let imageUrl,caption = undefined;
 
-  const imageUrl = await page.$eval(imageSelector, img => img.src);
-  const caption = await page.$eval(captionSelector, caption => caption.innerText);
 
+  // do while imageUrl is undefined or is the loader gif
+  do{
+
+    imageUrl = await page.$eval(imageSelector, (el) => el.getAttribute('src'));
+    caption = await page.$eval(captionSelector, (el) => el.textContent);
+
+  }while(imageUrl === undefined || imageUrl == '/public/img/template/loader-card.gif');
+  console.timeEnd('getLatestInstagramPost');
   await browser.close();
-
-
-  return {imageUrl, caption};
+  return { imageUrl, caption };
 };
